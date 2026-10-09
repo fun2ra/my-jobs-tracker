@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.local
+.env
+.env.*
+
+# Gmail exports contain personal data and the repo is public. Never commit them.
+*.csv

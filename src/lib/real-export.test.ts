@@ -1,15 +1,23 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { groupApplications } from './group';
 import { parseExport } from './parse';
+import type { EmailEvent } from './types';
 
 // The real export is git-ignored (personal data), so this only runs on my machine.
 const EXPORT = resolve(__dirname, '../../Job application emails - Emails.csv');
 
 describe.skipIf(!existsSync(EXPORT))('real Gmail export', () => {
-  const { events } = parseExport(readFileSync(EXPORT, 'utf8'));
-  const { applications, unassigned, noise } = groupApplications(events);
+  // Read in beforeAll: the describe body runs even when skipped, and the file is missing in CI.
+  let events: EmailEvent[] = [];
+  let applications: ReturnType<typeof groupApplications>['applications'] = [];
+  let unassigned: EmailEvent[] = [];
+  let noise: EmailEvent[] = [];
+  beforeAll(() => {
+    events = parseExport(readFileSync(EXPORT, 'utf8')).events;
+    ({ applications, unassigned, noise } = groupApplications(events));
+  });
 
   it('places every email once', () => {
     const placed = applications.flatMap(a => a.events).length + unassigned.length + noise.length;

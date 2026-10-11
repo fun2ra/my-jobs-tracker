@@ -1,14 +1,12 @@
-import type { GoogleSettings } from './google';
 import type { EmailEvent } from './types';
 
 /**
- * Everything is kept in this browser only: emails in IndexedDB, settings in localStorage.
- * Storage can be unavailable (private windows, blocked site data), so every call tolerates failure.
+ * Emails are kept in this browser only, in IndexedDB. Storage can be unavailable (private
+ * windows, blocked site data), so every call tolerates failure.
  */
 
 const DB_NAME = 'jobs-tracker';
 const STORE = 'data';
-const SETTINGS_KEY = 'jobs-tracker:settings';
 
 export interface SyncInfo {
   at: string;
@@ -71,23 +69,5 @@ export async function clearData(): Promise<void> {
     await withStore('readwrite', store => store.clear());
   } catch {
     // nothing stored
-  }
-}
-
-const EMPTY_SETTINGS: GoogleSettings = { clientId: '', scriptId: '', allowedEmail: '' };
-
-export function loadSettings(): GoogleSettings {
-  try {
-    return { ...EMPTY_SETTINGS, ...JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? '{}') };
-  } catch {
-    return EMPTY_SETTINGS;
-  }
-}
-
-export function saveSettings(settings: GoogleSettings): void {
-  try {
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-  } catch {
-    // kept for this session only
   }
 }

@@ -28,6 +28,12 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+        # Repository variables (Settings → Secrets and variables → Actions → Variables).
+        # They end up in the published JavaScript, so they are variables, not secrets.
+        env:
+          VITE_GOOGLE_CLIENT_ID: ${{ vars.VITE_GOOGLE_CLIENT_ID }}
+          VITE_APPS_SCRIPT_ID: ${{ vars.VITE_APPS_SCRIPT_ID }}
+          VITE_ALLOWED_EMAIL: ${{ vars.VITE_ALLOWED_EMAIL }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

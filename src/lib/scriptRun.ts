@@ -14,6 +14,7 @@ const HINTS: [RegExp, string][] = [
   [/Requested entity was not found|NOT_FOUND/i, 'Check the Script ID in Settings, and that the script is deployed as an API executable (SETUP.md, step 5).'],
   [/Script function not found/i, 'The Script ID in Settings must be the Apps Script project where the new exportJobEmails.gs is saved (Project Settings → IDs → Script ID, not the deployment ID). Save the code and try again (SETUP.md, troubleshooting).'],
   [/PERMISSION_DENIED|caller does not have permission/i, 'The script must use the same Google Cloud project as the OAuth client (SETUP.md, step 4).'],
+  [/UNAUTHENTICATED|invalid authentication credentials/i, 'Your sign-in expired or was revoked. Sign out and continue with Google again.'],
   [/Quota exceeded|rate ?limit/i, "Google's per-minute Gmail limit was reached. Wait a minute and try again; if it keeps happening, check that Apps Script has the latest exportJobEmails.gs (it paces its Gmail calls)."],
   [/insufficient|scope/i, 'Sign in again and allow every permission on the Google consent screen.'],
 ];

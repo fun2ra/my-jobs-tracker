@@ -30,10 +30,33 @@ function securityHeaders(): Plugin {
   };
 }
 
+/**
+ * Stops a build without the Google IDs, so a broken site is never published. Same names as
+ * REQUIRED_ENV in src/lib/config.ts (that file reads import.meta.env, which isn't available here).
+ */
+function requireEnv(names: string[]): Plugin {
+  let env: Record<string, string> = {};
+  return {
+    name: 'require-env',
+    apply: 'build',
+    configResolved: config => {
+      env = config.env;
+    },
+    buildStart() {
+      const missing = names.filter(name => !env[name]?.trim());
+      if (missing.length) {
+        this.error(
+          `Missing ${missing.join(', ')}. Set them in .env (see .env.example), or as repository variables for GitHub Actions.`,
+        );
+      }
+    },
+  };
+}
+
 export default defineConfig({
   // GitHub Pages serves the site at https://<user>.github.io/my-jobs-tracker/
   base: '/my-jobs-tracker/',
-  plugins: [react(), securityHeaders()],
+  plugins: [react(), securityHeaders(), requireEnv(['VITE_GOOGLE_CLIENT_ID', 'VITE_APPS_SCRIPT_ID'])],
   test: {
     environment: 'node',
   },

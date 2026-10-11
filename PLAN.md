@@ -4,14 +4,15 @@ A private dashboard showing the status of my job applications, built from my Gma
 
 ## How data gets in
 
-**"Update from Gmail" button** (set up with [SETUP.md](SETUP.md)): Google sign-in restricted to my
-account → the Apps Script API runs `runExport` in `apps-script/exportJobEmails.gs` as me → the script
+**"Continue with Google", then "Update from Gmail"** (set up with [SETUP.md](SETUP.md)): Google sign-in
+restricted to my account → the Apps Script API runs `runExport` in `apps-script/exportJobEmails.gs` as me → the script
 reads Gmail (read-only), updates my private spreadsheet and returns the Emails rows → the app keeps them
-in this browser only and revokes the sign-in token.
+in this browser only. Signing out revokes the token.
 
 Fallback: import a CSV download of the Emails tab.
 
-No CSV, data or account identifiers go in the repo or the published site.
+No CSV or email data goes in the repo or the published site. The client ID and Script ID come from
+`VITE_*` variables (`.env` locally, repository variables in Actions) and are in the published JavaScript.
 
 ## Data model
 
@@ -53,9 +54,9 @@ No CSV, data or account identifiers go in the repo or the published site.
      Google itself refuses every other account.
    - The app calls the Apps Script API (`scripts.run`, `devMode`, deployment "Only myself"), so the
      script runs as me. It uses the Gmail advanced service, so read-only Gmail access is enough.
-   - The app also checks the signed-in address against the one in Settings. Settings (client ID,
-     Script ID, address) live in the browser, not in the repo or the build.
-   - The token stays in memory and is revoked after every run.
+   - Optionally the app also checks the signed-in address (`VITE_ALLOWED_EMAIL`).
+   - The token stays in memory: revoked on sign-out, gone on reload, expires within an hour.
+   - Logic in hooks (`useAuth`, `useJobs`); the UI is built by hand from the design.
    - Content Security Policy on the built page limits it to its own code and Google's endpoints.
 6. **Deploy to GitHub Pages**
    - Vite `base` is `/my-jobs-tracker/` (already set)

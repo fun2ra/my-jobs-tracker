@@ -2,6 +2,7 @@
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import { fileURLToPath } from "node:url";
 
 /**
  * Content Security Policy for the published site: the page may only load its own code and
@@ -65,6 +66,11 @@ function requireEnv(names: string[]): Plugin {
 export default defineConfig({
   // GitHub Pages serves the site at https://<user>.github.io/my-jobs-tracker/
   base: "/my-jobs-tracker/",
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
   plugins: [
     react(),
     securityHeaders(),

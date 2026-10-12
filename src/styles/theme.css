@@ -1,0 +1,183 @@
+/*
+ * Semantic design tokens: named by role, so a theme can change what each one means.
+ * Light values live on :root, dark values on .dark (toggle the class on <html>).
+ * Components use these utilities (bg-surface, text-fg-muted, border-border, ...)
+ * and need no changes when the theme switches.
+ *
+ * The style guide defines light mode only; the .dark values are a derived starting point.
+ */
+:root {
+  color-scheme: light;
+
+  /* Surfaces and ink */
+  --canvas: var(--color-stone-50);
+  --surface: var(--color-white);
+  --surface-muted: var(--color-stone-100);
+
+  --fg: var(--color-slate-900);
+  --fg-muted: var(--color-slate-600);
+  --fg-subtle: var(--color-slate-500);
+
+  --border: var(--color-stone-200);
+  --border-strong: var(--color-stone-300);
+  --ring: var(--color-blue-600);
+
+  /* Actions */
+  --primary: var(--color-blue-600);
+  --primary-hover: var(--color-blue-700);
+  --primary-fg: var(--color-white);
+
+  --inverse: var(--color-slate-900);
+  --inverse-fg: var(--color-white);
+
+  /* Charts: single-series bars */
+  --chart: var(--color-blue-500);
+
+  /*
+   * Stages: each has a mark (dot, bar), a subtle chip background and strong chip text.
+   * Always pair a stage color with its label; never rely on color alone.
+   */
+  --stage-applied: var(--color-slate-400);
+  --stage-applied-subtle: var(--color-slate-100);
+  --stage-applied-strong: var(--color-slate-700);
+
+  --stage-viewed: var(--color-blue-500);
+  --stage-viewed-subtle: var(--color-blue-50);
+  --stage-viewed-strong: var(--color-blue-700);
+
+  --stage-assessment: var(--color-violet-500);
+  --stage-assessment-subtle: var(--color-violet-50);
+  --stage-assessment-strong: var(--color-violet-700);
+
+  --stage-interview: var(--color-teal-500);
+  --stage-interview-subtle: var(--color-teal-50);
+  --stage-interview-strong: var(--color-teal-700);
+
+  --stage-offer: var(--color-green-500);
+  --stage-offer-subtle: var(--color-green-50);
+  --stage-offer-strong: var(--color-green-700);
+
+  --stage-rejected: var(--color-red-500);
+  --stage-rejected-subtle: var(--color-red-50);
+  --stage-rejected-strong: var(--color-red-700);
+
+  /* Status: feedback outside the pipeline (toasts, alerts, "Action" badges) */
+  --success: var(--color-green-500);
+  --success-subtle: var(--color-green-50);
+  --success-strong: var(--color-green-700);
+
+  --warning: var(--color-amber-500);
+  --warning-subtle: var(--color-amber-50);
+  --warning-strong: var(--color-amber-700);
+
+  --danger: var(--color-red-500);
+  --danger-subtle: var(--color-red-50);
+  --danger-strong: var(--color-red-700);
+
+  --info: var(--color-blue-500);
+  --info-subtle: var(--color-blue-50);
+  --info-strong: var(--color-blue-700);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --canvas: var(--color-slate-950);
+  --surface: var(--color-slate-900);
+  --surface-muted: var(--color-slate-800);
+
+  --fg: var(--color-stone-50);
+  --fg-muted: var(--color-stone-300);
+  --fg-subtle: var(--color-slate-400);
+
+  --border: var(--color-slate-800);
+  --border-strong: var(--color-slate-700);
+  --ring: var(--color-blue-400);
+
+  --primary: var(--color-blue-500);
+  --primary-hover: var(--color-blue-400);
+  --primary-fg: var(--color-white);
+
+  --inverse: var(--color-stone-50);
+  --inverse-fg: var(--color-slate-900);
+
+  --chart: var(--color-blue-400);
+
+  --stage-applied-subtle: oklch(from var(--color-slate-400) l c h / 0.18);
+  --stage-applied-strong: var(--color-slate-100);
+  --stage-viewed-subtle: oklch(from var(--color-blue-500) l c h / 0.18);
+  --stage-viewed-strong: var(--color-blue-50);
+  --stage-assessment-subtle: oklch(from var(--color-violet-500) l c h / 0.18);
+  --stage-assessment-strong: var(--color-violet-50);
+  --stage-interview-subtle: oklch(from var(--color-teal-500) l c h / 0.18);
+  --stage-interview-strong: var(--color-teal-50);
+  --stage-offer-subtle: oklch(from var(--color-green-500) l c h / 0.18);
+  --stage-offer-strong: var(--color-green-50);
+  --stage-rejected-subtle: oklch(from var(--color-red-500) l c h / 0.18);
+  --stage-rejected-strong: var(--color-red-50);
+
+  --success-subtle: oklch(from var(--color-green-500) l c h / 0.18);
+  --success-strong: var(--color-green-50);
+  --warning-subtle: oklch(from var(--color-amber-500) l c h / 0.18);
+  --warning-strong: var(--color-amber-50);
+  --danger-subtle: oklch(from var(--color-red-500) l c h / 0.18);
+  --danger-strong: var(--color-red-50);
+  --info-subtle: oklch(from var(--color-blue-500) l c h / 0.18);
+  --info-strong: var(--color-blue-50);
+}
+
+/* Expose the semantic tokens as utilities; inline so they resolve per theme */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ring: var(--ring);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-fg: var(--primary-fg);
+
+  --color-inverse: var(--inverse);
+  --color-inverse-fg: var(--inverse-fg);
+
+  --color-chart: var(--chart);
+
+  --color-stage-applied: var(--stage-applied);
+  --color-stage-applied-subtle: var(--stage-applied-subtle);
+  --color-stage-applied-strong: var(--stage-applied-strong);
+  --color-stage-viewed: var(--stage-viewed);
+  --color-stage-viewed-subtle: var(--stage-viewed-subtle);
+  --color-stage-viewed-strong: var(--stage-viewed-strong);
+  --color-stage-assessment: var(--stage-assessment);
+  --color-stage-assessment-subtle: var(--stage-assessment-subtle);
+  --color-stage-assessment-strong: var(--stage-assessment-strong);
+  --color-stage-interview: var(--stage-interview);
+  --color-stage-interview-subtle: var(--stage-interview-subtle);
+  --color-stage-interview-strong: var(--stage-interview-strong);
+  --color-stage-offer: var(--stage-offer);
+  --color-stage-offer-subtle: var(--stage-offer-subtle);
+  --color-stage-offer-strong: var(--stage-offer-strong);
+  --color-stage-rejected: var(--stage-rejected);
+  --color-stage-rejected-subtle: var(--stage-rejected-subtle);
+  --color-stage-rejected-strong: var(--stage-rejected-strong);
+
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-strong: var(--success-strong);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-warning-strong: var(--warning-strong);
+  --color-danger: var(--danger);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-danger-strong: var(--danger-strong);
+  --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+  --color-info-strong: var(--info-strong);
+}

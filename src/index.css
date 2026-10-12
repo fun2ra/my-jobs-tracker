@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "./styles/tokens.css";
+@import "./styles/theme.css";
+
+/* dark: follows the .dark class on <html>, not the OS setting */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Only true globals go here */
+@layer base {
+  body {
+    @apply bg-canvas text-fg font-sans text-body antialiased;
+  }
+
+  * {
+    @apply border-border;
+  }
+}

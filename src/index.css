@@ -20,9 +20,13 @@
       margin: auto;
     }
 
+    main {
+      min-height: calc(100vh - 389px);
+    }
+
     footer {
-      position: fixed;
-      bottom: 0;
+      /* position: fixed; */
+      bottom: 0px;
       background-color: white;
       padding: 48px 0px;
       width: 100%;

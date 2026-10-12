@@ -1,6 +1,7 @@
 import { useJobs } from '@/hooks/useJobs';
 import { type Session } from '@/lib/google';
 import { config } from '@/lib/config';
+import { Button } from '@base-ui/react/button';
 
 interface MainDashboardProps {
     session: Session | undefined;
@@ -13,15 +14,15 @@ export default function MainDashboard({ session, signOut }: MainDashboardProps) 
     const jobs = useJobs();
 
     return (
-        <main>
+        <main className='pt-12 pb-24'>
             <h1>Jobs Tracker</h1>
             <p>
                 {session.email} <button onClick={signOut}>Sign out</button>
             </p>
 
-            <button onClick={() => jobs.updateFromGmail(session, config.scriptId)} disabled={jobs.updating}>
+            <Button onClick={() => jobs.updateFromGmail(session, config.scriptId)} disabled={jobs.updating}>
                 Update from Gmail
-            </button>
+            </Button>
             {jobs.updating && <span aria-live="polite"> Searching Gmail… {jobs.elapsed}s</span>}
             {jobs.message && <p aria-live="polite">{jobs.message}</p>}
             {jobs.error && <p role="alert">{jobs.error}</p>}

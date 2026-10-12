@@ -1,0 +1,93 @@
+/*
+ * Primitive design tokens: raw values, named by hue and step, never by use.
+ * Components should not use these directly; use the semantic tokens in theme.css.
+ *
+ * Values come from the Jobs Tracker style guide (Figma "07 Style guide").
+ * Steps marked "derived" are not in the guide; they exist for dark mode or hover.
+ */
+@theme {
+  /* Drop Tailwind's default palette so only these colors exist */
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Stone: warm grays for surfaces and lines */
+  --color-stone-50: #f4f5f2; /* ground: page */
+  --color-stone-100: #eef0ec; /* segmented control track */
+  --color-stone-200: #dfe2dd; /* line: borders */
+  --color-stone-300: #c9cdc7; /* control borders */
+
+  /* Slate: cool grays for ink */
+  --color-slate-100: #eef0f1; /* applied chip */
+  --color-slate-400: #8a9097; /* applied mark */
+  --color-slate-500: #6b7178; /* placeholder */
+  --color-slate-600: #4a5159; /* ink 2: secondary text */
+  --color-slate-700: #3d434a; /* applied chip text */
+  --color-slate-800: #23282d; /* derived */
+  --color-slate-900: #15191d; /* ink: text, sign-in button */
+  --color-slate-950: #0d1013; /* derived */
+
+  /* Blue: accent and data */
+  --color-blue-50: #e3eefb;
+  --color-blue-400: #5a97e0; /* derived */
+  --color-blue-500: #2a78d6; /* data blue: charts, viewed mark */
+  --color-blue-600: #1c5cab; /* accent: actions */
+  --color-blue-700: #184f95;
+
+  /* Stage hues */
+  --color-violet-50: #ece9fb;
+  --color-violet-500: #6250d6;
+  --color-violet-700: #3e2f9e;
+
+  --color-teal-50: #e0f5ec;
+  --color-teal-500: #1baf7a;
+  --color-teal-700: #0e6b4a;
+
+  --color-green-50: #dff2df;
+  --color-green-500: #008300;
+  --color-green-700: #0b5e0b;
+
+  --color-red-50: #fbe7e7;
+  --color-red-500: #d03b3b;
+  --color-red-700: #9e2626;
+
+  --color-amber-50: #fef3d9;
+  --color-amber-500: #d99a00; /* derived */
+  --color-amber-700: #7a5200;
+
+  /* Typography: IBM Plex Sans for UI, IBM Plex Mono for numbers, dates and counts */
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  /* Type scale by role: text-display, text-title, ... (size / weight from the guide) */
+  --text-display: 2.25rem; /* 36 / 700 */
+  --text-display--line-height: 1.15;
+  --text-display--font-weight: 700;
+  --text-title: 1.75rem; /* 28 / 700 */
+  --text-title--line-height: 1.2;
+  --text-title--font-weight: 700;
+  --text-heading: 1rem; /* 16 / 600 */
+  --text-heading--line-height: 1.4;
+  --text-heading--font-weight: 600;
+  --text-body: 0.875rem; /* 14 / 400 */
+  --text-body--line-height: 1.5;
+  --text-caption: 0.75rem; /* 12 / 400 */
+  --text-caption--line-height: 1.4;
+
+  /* Spacing: one base unit drives p-*, m-*, gap-*, w-*, h-* (p-4 = 4 x base) */
+  --spacing: 0.25rem;
+
+  /* Shape: bars 4, segment 6, controls 8, cards 12, pills full */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-full: 9999px;
+
+  /* The guide is flat: surfaces are separated by borders, not shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(21 25 29 / 0.05);
+  --shadow-md: 0 4px 12px -2px rgb(21 25 29 / 0.1);
+}

@@ -21,9 +21,9 @@ export function App() {
 
   if (!auth.session) {
     return (
-      <main>
-        <h1>Jobs Tracker</h1>
-        <button onClick={auth.signIn} disabled={auth.signingIn}>
+      <main className='border h-96' >
+        <h1 className='text-5xl text-black'>Every application, one place, current stage</h1>
+        <button onClick={auth.signIn} disabled={auth.signingIn} className=' p-5 rounded-b-sm bg-black text-white mt-14 w-full max-w-2xl'>
           {auth.signingIn ? 'Signing in…' : 'Continue with Google'}
         </button>
         {auth.error && <p role="alert">{auth.error}</p>}

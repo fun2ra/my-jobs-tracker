@@ -1,6 +1,7 @@
 /// <reference types="vitest/config" />
-import { defineConfig, type Plugin } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig, type Plugin } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 /**
  * Content Security Policy for the published site: the page may only load its own code and
@@ -12,20 +13,28 @@ const CSP = [
   "script-src 'self' https://accounts.google.com/gsi/client",
   "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style",
   "connect-src 'self' https://accounts.google.com/gsi/ https://oauth2.googleapis.com https://www.googleapis.com https://script.googleapis.com",
-  'frame-src https://accounts.google.com/gsi/',
+  "frame-src https://accounts.google.com/gsi/",
   "img-src 'self' data:",
   "object-src 'none'",
   "base-uri 'none'",
   "form-action 'none'",
-].join('; ');
+].join("; ");
 
 function securityHeaders(): Plugin {
   return {
-    name: 'security-meta-tags',
-    apply: 'build',
+    name: "security-meta-tags",
+    apply: "build",
     transformIndexHtml: () => [
-      { tag: 'meta', attrs: { 'http-equiv': 'Content-Security-Policy', content: CSP }, injectTo: 'head-prepend' },
-      { tag: 'meta', attrs: { name: 'referrer', content: 'no-referrer' }, injectTo: 'head-prepend' },
+      {
+        tag: "meta",
+        attrs: { "http-equiv": "Content-Security-Policy", content: CSP },
+        injectTo: "head-prepend",
+      },
+      {
+        tag: "meta",
+        attrs: { name: "referrer", content: "no-referrer" },
+        injectTo: "head-prepend",
+      },
     ],
   };
 }
@@ -37,16 +46,16 @@ function securityHeaders(): Plugin {
 function requireEnv(names: string[]): Plugin {
   let env: Record<string, string> = {};
   return {
-    name: 'require-env',
-    apply: 'build',
-    configResolved: config => {
+    name: "require-env",
+    apply: "build",
+    configResolved: (config) => {
       env = config.env;
     },
     buildStart() {
-      const missing = names.filter(name => !env[name]?.trim());
+      const missing = names.filter((name) => !env[name]?.trim());
       if (missing.length) {
         this.error(
-          `Missing ${missing.join(', ')}. Set them in .env (see .env.example), or as repository variables for GitHub Actions.`,
+          `Missing ${missing.join(", ")}. Set them in .env (see .env.example), or as repository variables for GitHub Actions.`,
         );
       }
     },
@@ -55,9 +64,14 @@ function requireEnv(names: string[]): Plugin {
 
 export default defineConfig({
   // GitHub Pages serves the site at https://<user>.github.io/my-jobs-tracker/
-  base: '/my-jobs-tracker/',
-  plugins: [react(), securityHeaders(), requireEnv(['VITE_GOOGLE_CLIENT_ID', 'VITE_APPS_SCRIPT_ID'])],
+  base: "/my-jobs-tracker/",
+  plugins: [
+    react(),
+    securityHeaders(),
+    requireEnv(["VITE_GOOGLE_CLIENT_ID", "VITE_APPS_SCRIPT_ID"]),
+    tailwindcss(),
+  ],
   test: {
-    environment: 'node',
+    environment: "node",
   },
 });

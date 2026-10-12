@@ -1,7 +1,7 @@
 import { useAuth } from './hooks/useAuth';
 import { useJobs } from './hooks/useJobs';
 import { config, missingConfig } from './lib/config';
-
+import { Button } from "@/components/ui/button"
 /**
  * Bare placeholder UI: it shows how the hooks fit together and is meant to be replaced by the
  * real design. All the logic is in hooks/useAuth.ts and hooks/useJobs.ts.
@@ -23,9 +23,7 @@ export function App() {
     return (
       <main className='border h-96' >
         <h1 className='text-5xl text-black'>Every application, one place, current stage</h1>
-        <button onClick={auth.signIn} disabled={auth.signingIn} className=' p-5 rounded-b-sm bg-black text-white mt-14 w-full max-w-2xl'>
-          {auth.signingIn ? 'Signing in…' : 'Continue with Google'}
-        </button>
+        <Button variant="outline" className={'bg-black text-white'} onClick={auth.signIn} disabled={auth.signingIn}>{auth.signingIn ? 'Signing in…' : 'Continue with Google'}</Button>
         {auth.error && <p role="alert">{auth.error}</p>}
       </main>
     );

@@ -13,24 +13,41 @@
   body {
     @apply font-sans antialiased bg-stone-50 text-foreground;
 
-    main,
-    header > div.header-content,
-    footer > div.footer-content {
-      max-width: 1440px;
-      margin: auto;
-    }
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+  }
 
-    main {
+  /*
+Source - https://stackoverflow.com/a/20352949
+Posted by vsync, modified by community. See post 'Timeline' for change history
+Retrieved 2026-10-13, License - CC BY-SA 4.0
+*/
+
+  body::after {
+    content: "";
+    display: block;
+    height: 220px;
+    /* Set same as footer's height */
+  }
+
+  main,
+  header > div.header-content,
+  footer > div.footer-content {
+    max-width: 1440px;
+    margin: auto;
+  }
+
+  /* main {
       min-height: calc(100vh - 389px);
-    }
+    } */
 
-    footer {
-      /* position: fixed; */
-      bottom: 0px;
-      background-color: white;
-      padding: 48px 0px;
-      width: 100%;
-    }
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    padding: 48px 0px;
   }
 
   * {

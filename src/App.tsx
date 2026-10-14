@@ -7,34 +7,31 @@ import Authentication from './components/Authentication';
 import MainDashboard from './components/MainDashboard';
 import Footer from './layout/footer';
 
-/**
- * Bare placeholder UI: it shows how the hooks fit together and is meant to be replaced by the
- * real design. All the logic is in hooks/useAuth.ts and hooks/useJobs.ts.
- */
 
-const renderContent = () => {
-  const auth = useAuth(config);
-  const { session } = auth;
-
+const renderContent = (auth: ReturnType<typeof useAuth>) => {
   if (missingConfig.length) {
-    <MissingConfig missingConfig={missingConfig} />
+    return <MissingConfig missingConfig={missingConfig} />;
   }
 
   if (!auth.session) {
     return (
-      <Authentication error={auth.error} signIn={auth.signIn} signingIn={auth.signingIn} />
+      <>
+        <Authentication error={auth.error} signIn={auth.signIn} signingIn={auth.signingIn} />
+        <Footer />
+      </>
     );
   }
 
-  return (
-    <MainDashboard session={session} signOut={auth.signOut} />
-  )
-}
+  return <MainDashboard session={auth.session} signOut={auth.signOut} />;
+};
 
 export function App() {
-  return (<>
-    <Header />
-    {renderContent()}
-    <Footer />
-  </>)
+  const auth = useAuth(config);
+
+  return (
+    <>
+      <Header session={auth.session} />
+      {renderContent(auth)}
+    </>
+  );
 }

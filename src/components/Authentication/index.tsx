@@ -1,6 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { LogIn, Mail, Combine, GlobeOff, CircleAlert } from 'lucide-react';
-import GIcon from "@/assets/images/google-logo.svg"
+import { LogIn, Mail, Combine, GlobeOff } from 'lucide-react';
+import GIcon from '@/assets/images/google-logo.svg';
+import { Button } from '@/components/ui/button';
+import { Alert } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardEyebrow, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { tones } from '@/components/ui/tone';
 
 interface AuthErrorProps {
     signingIn: boolean;
@@ -8,82 +13,81 @@ interface AuthErrorProps {
     signIn: () => Promise<void>;
 }
 
+const steps = [
+    {
+        icon: LogIn,
+        tone: tones.neutral,
+        title: 'Sign in with Google',
+        text: 'Only the account set in Settings is accepted. Anyone else is refused before anything is read.',
+        tag: 'one account',
+    },
+    {
+        icon: Mail,
+        tone: tones.info,
+        title: 'Reads Gmail',
+        text: 'An Apps Script runs as you, finds job emails and labels each one: applied, interview, rejected, noise.',
+        tag: 'read-only',
+    },
+    {
+        icon: Combine,
+        tone: tones.success,
+        title: 'Group into applications',
+        text: 'Updates arrive as new conversations, so emails are matched by company, role or job reference.',
+        tag: 'company + role',
+    },
+    {
+        icon: GlobeOff,
+        tone: tones.warning,
+        title: 'Keep it in the browser',
+        text: 'Results are stored in this browser only. You can delete them at any time.',
+        tag: 'no backend',
+    },
+];
 
 export default function Authentication({ error, signIn, signingIn }: AuthErrorProps) {
     return (
-        <main className='mt-24 flex justify-between pb-16'>
-            <div className="max-w-130 flex flex-col gap-8">
-                <div className="uppercase font-mono text-xs">Private dashboard - Build from Gmail data</div>
-                <h1 className='text-6xl font-bold text-black'>Every application, one place, current stage.</h1>
-                <h2 className="text-slate-700">Confirmations, interview invites, asessments and rejections are grouped into applications by company, role or job reference, so you can see every time the staus of eah one of them.</h2>
+        <main className="page-container flex flex-col gap-12 py-16 lg:flex-row lg:items-start lg:justify-between lg:py-24">
+            <div className="flex max-w-130 flex-col gap-6">
+                <CardEyebrow>Private dashboard · Built from Gmail data</CardEyebrow>
+                <h1 className="text-display text-fg">Every application, one place, current stage.</h1>
+                <p className="text-body text-fg-muted">
+                    Confirmations, interview invites, assessments and rejections are grouped into applications by company, role or
+                    job reference, so you can always see the status of each one.
+                </p>
 
-                <div className="border max-w-117 bg-white rounded-md shadow p-8">
-                    <div className="font-bold text-xl mb-4">Sign in</div>
-                    {error && <p role="alert" className="p-4 bg-red-50 rounded-sm mb-4 text-red-700 text-sm flex gap-2 items-center">
-                        <span>
-                            <CircleAlert className="text-sm" />
-                        </span>
-                        {error}
-                    </p>}
-                    <Button variant="outline" className={'bg-black text-white font-bold p-6 w-full'} onClick={signIn} disabled={signingIn}>
-                        <img src={GIcon} alt="login with google" />
+                <Card className="mt-2 max-w-117 gap-4 p-6">
+                    <CardTitle className="text-title">Sign in</CardTitle>
+                    {error && <Alert tone="danger">{error}</Alert>}
+                    <Button variant="inverse" size="lg" className="w-full" onClick={signIn} disabled={signingIn}>
+                        <img src={GIcon} alt="" className="size-5" />
                         {signingIn ? 'Signing in…' : 'Continue with Google'}
                     </Button>
-                    <div className="mt-4 text-slate-700 text-sm">Read-only Gmail access, limited to one account. The token is revoked after every run.</div>
-                </div>
-
+                    <p className="text-caption text-fg-muted">
+                        Read-only Gmail access, limited to one account. The token is revoked after every run.
+                    </p>
+                </Card>
             </div>
 
-            <div className="bg-white pt-8 pb-12 px-8 shadow rounded-md max-w-148 w-full  mt-6 h-fit">
-                <div className="uppercase font-mono text-xs mb-6">What happens when you update</div>
-                <div className=" flex flex-col gap-6">
-                    <div className=" flex gap-4">
-                        <div className="w-11 h-11 relative rounded-sm bg-slate-100 before:block before:h-17 before:bg-slate-100 before:w-0.5 before:left-1/2 before:content-[''] before:relative before:top-12">
-                            <LogIn className="absolute top-2.5 right-2.5 text-slate-700" />
-                        </div>
-                        <div className="max-w-115">
-                            <div className="font-semibold text-[18px]">Sign in with Google</div>
-                            <div className="text-slate-700 text-sm mb-2">Only the account set in Settings is accepted. Anyone else is refused before anything is read.</div>
-                            <div className="font-mono text-xs  text-slate-700 p-1 bg-slate-100 w-fit rounded-b-sm">one account</div>
-                        </div>
-                    </div>
-                    <div className=" flex gap-4">
-                        <div className="w-11 h-11 relative rounded-sm bg-blue-50 before:block before:h-17 before:bg-slate-100 before:w-0.5 before:left-1/2 before:content-[''] before:relative before:top-12">
-                            <Mail className="absolute top-2.5 right-2.5 text-blue-700" />
-                        </div>
-                        <div className="max-w-115">
-                            <div className="font-semibold text-[18px]">Reads Gmail</div>
-                            <div className="text-slate-700 text-sm mb-2">An App Script runs as you, finds jobs emails and labels each one: applied, interview, rejected, noise.</div>
-                            <div className="font-mono text-xs  text-slate-700 p-1 bg-slate-100 w-fit rounded-b-sm">read-only</div>
-                        </div>
-                    </div>
-                    <div className=" flex gap-4">
-                        <div className="w-11 h-11 relative rounded-sm bg-green-50 before:block before:h-17 before:bg-slate-100 before:w-0.5 before:left-1/2 before:content-[''] before:relative before:top-12">
-                            <Combine className="absolute top-2.5 right-2.5 text-green-700" />
-                        </div>
-                        <div className="max-w-115">
-                            <div className="font-semibold text-[18px]">
-                                Group into applications
+            <Card className="w-full max-w-148 gap-6 p-8">
+                <CardEyebrow>What happens when you update</CardEyebrow>
+                <ol className="flex flex-col">
+                    {steps.map(({ icon: Icon, tone, title, text, tag }, i) => (
+                        <li key={title} className="group flex gap-4">
+                            <div className="flex flex-col items-center">
+                                <div className={cn(tone, 'grid size-11 shrink-0 place-items-center rounded-lg bg-(--tone-subtle) text-(--tone-strong)')}>
+                                    <Icon aria-hidden className="size-5" />
+                                </div>
+                                {i < steps.length - 1 && <div aria-hidden className="my-1 w-0.5 flex-1 rounded-full bg-border" />}
                             </div>
-                            <div className="text-slate-700 text-sm mb-2">Updates arrive as new conversations, so emails are matched by company, role or job reference.</div>
-                            <div className="font-mono text-xs  text-slate-700 p-1 bg-slate-100 w-fit rounded-b-sm">company + role</div>
-                        </div>
-                    </div>
-                    <div className=" flex gap-4">
-                        <div className="w-11 h-11 relative rounded-sm bg-amber-50 ">
-                            <GlobeOff className="absolute top-2.5 right-2.5 text-amber-700" />
-                        </div>
-                        <div className="max-w-115">
-                            <div className="font-semibold text-[18px]">
-                                Keep it in the browser
+                            <div className="flex flex-col gap-1 pb-6 group-last:pb-0">
+                                <h3 className="text-heading text-fg">{title}</h3>
+                                <p className="text-body text-fg-muted">{text}</p>
+                                <Badge className="mt-1 font-mono">{tag}</Badge>
                             </div>
-                            <div className="text-slate-700 text-sm mb-2">Results are stored in browser only. You can delete them at any time.</div>
-                            <div className="font-mono text-xs  text-slate-700 p-1 bg-slate-100 w-fit rounded-b-sm">no backend</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+                        </li>
+                    ))}
+                </ol>
+            </Card>
         </main>
     );
 }

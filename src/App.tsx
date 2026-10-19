@@ -1,37 +1,44 @@
 import { useAuth } from './hooks/useAuth';
-import { config } from './lib/config';
-import { missingConfig } from '@/lib/config';
+import { useJobs } from './hooks/useJobs';
+import { config, missingConfig } from './lib/config';
 import Header from './layout/header';
+import SideBar from './layout/sideBar';
+import Footer from './layout/footer';
 import MissingConfig from './components/MissingConfig';
 import Authentication from './components/Authentication';
 import MainDashboard from './components/MainDashboard';
-import Footer from './layout/footer';
 
+export function App() {
+  const auth = useAuth(config);
+  // One instance for the whole app, so an update started in the header shows in the dashboard.
+  const jobs = useJobs();
 
-const renderContent = (auth: ReturnType<typeof useAuth>) => {
   if (missingConfig.length) {
-    return <MissingConfig missingConfig={missingConfig} />;
+    return (
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <MissingConfig missingConfig={missingConfig} />
+      </div>
+    );
   }
 
   if (!auth.session) {
     return (
-      <>
+      <div className="flex min-h-screen flex-col">
+        <Header />
         <Authentication error={auth.error} signIn={auth.signIn} signingIn={auth.signingIn} />
         <Footer />
-      </>
+      </div>
     );
   }
 
-  return <MainDashboard session={auth.session} signOut={auth.signOut} />;
-};
-
-export function App() {
-  const auth = useAuth(config);
-
   return (
     <>
-      <Header session={auth.session} />
-      {renderContent(auth)}
+      <SideBar email={auth.session.email} signOut={auth.signOut} />
+      <div className="flex min-h-screen flex-col pl-56">
+        <Header session={auth.session} jobs={jobs} />
+        <MainDashboard jobs={jobs} />
+      </div>
     </>
   );
 }

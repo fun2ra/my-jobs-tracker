@@ -1,56 +1,69 @@
-import { useJobs } from '@/hooks/useJobs';
-import { type Session } from '@/lib/google';
-import SideBar from '@/layout/sideBar';
-interface MainDashboardProps {
-    session: Session | undefined;
-    signOut: () => void;
-}
+import type { useJobs } from '@/hooks/useJobs';
+import type { Track } from '@/lib/types';
+import { ActionBadge, StageBadge } from '@/components/ui/badge';
+import { Card, CardDescription, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableNumber, TableRow } from '@/components/ui/table';
 
-export default function MainDashboard({ session, signOut }: MainDashboardProps) {
-    if (!session) return;
+const trackDot: Record<Track, string> = {
+    automation: 'bg-field-automation',
+    software: 'bg-field-software',
+    other: 'bg-field-other',
+};
 
-    const jobs = useJobs();
+const columns = ['Stage', 'Company', 'Role', 'Source', 'Field', 'Applied', 'Last update', 'Emails'];
 
+export default function MainDashboard({ jobs }: { jobs: ReturnType<typeof useJobs> }) {
     return (
-        <>
-            <SideBar signOut={signOut} />
-            <main className='py-12 pl-9'>
-                <h1>Jobs Tracker</h1>
-                <p>
-                    {session.email} <button onClick={signOut}>Sign out</button>
-                </p>
-                <p>
-                    {jobs.events.length} emails → {jobs.applications.length} applications ({jobs.unassigned.length} unassigned,{' '}
-                    {jobs.noise.length} noise)
-                </p>
-                <table className='rounded-xl border-slate-700 border'>
-                    <thead>
+        <main className="flex flex-col gap-6 px-9 py-8">
+            <p className="text-body text-fg-muted">
+                <span className="font-mono tabular-nums">{jobs.events.length}</span> emails →{' '}
+                <span className="font-mono tabular-nums">{jobs.applications.length}</span> applications (
+                <span className="font-mono tabular-nums">{jobs.unassigned.length}</span> unassigned,{' '}
+                <span className="font-mono tabular-nums">{jobs.noise.length}</span> noise)
+            </p>
+
+            {jobs.applications.length === 0 ? (
+                <Card className="items-start">
+                    <CardTitle>No applications yet</CardTitle>
+                    <CardDescription>Use “Update from Gmail” or import a CSV export to fill this table.</CardDescription>
+                </Card>
+            ) : (
+                <Table>
+                    <TableHeader>
                         <tr>
-                            {['Stage', 'Company', 'Role', 'Source', 'Field', 'Applied', 'Last update', 'Emails'].map(h => (
-                                <th key={h}>{h}</th>
+                            {columns.map(h => (
+                                <TableHead key={h} className={h === 'Emails' ? 'text-right' : undefined}>
+                                    {h}
+                                </TableHead>
                             ))}
                         </tr>
-                    </thead>
-                    <tbody>
+                    </TableHeader>
+                    <TableBody>
                         {jobs.applications.map(a => (
-                            <tr key={a.id}>
-                                <td>
-                                    {a.stage}
-                                    {a.needsAction ? ' ⚠' : ''}
-                                </td>
-                                <td>{a.company || '—'}</td>
-                                <td>{a.role || '—'}</td>
-                                <td>{a.source}</td>
-                                <td>{a.track}</td>
-                                <td>{a.appliedAt.toLocaleDateString()}</td>
-                                <td>{a.lastUpdate.toLocaleDateString()}</td>
-                                <td>{a.events.length}</td>
-                            </tr>
+                            <TableRow key={a.id}>
+                                <TableCell>
+                                    <div className="flex items-center gap-2">
+                                        <StageBadge stage={a.stage} />
+                                        {a.needsAction && <ActionBadge />}
+                                    </div>
+                                </TableCell>
+                                <TableCell className="font-semibold">{a.company || '—'}</TableCell>
+                                <TableCell className="text-fg-muted">{a.role || '—'}</TableCell>
+                                <TableCell className="whitespace-nowrap text-fg-muted">{a.source}</TableCell>
+                                <TableCell>
+                                    <span className="inline-flex items-center gap-2 text-fg-muted capitalize">
+                                        <span aria-hidden className={`size-2 rounded-full ${trackDot[a.track]}`} />
+                                        {a.track}
+                                    </span>
+                                </TableCell>
+                                <TableNumber>{a.appliedAt.toLocaleDateString()}</TableNumber>
+                                <TableNumber>{a.lastUpdate.toLocaleDateString()}</TableNumber>
+                                <TableNumber className="text-right">{a.events.length}</TableNumber>
+                            </TableRow>
                         ))}
-                    </tbody>
-                </table>
-            </main>
-        </>
-
-    )
+                    </TableBody>
+                </Table>
+            )}
+        </main>
+    );
 }

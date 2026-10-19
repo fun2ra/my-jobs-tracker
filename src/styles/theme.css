@@ -28,10 +28,27 @@
   --primary-fg: var(--color-white);
 
   --inverse: var(--color-slate-900);
+  --inverse-hover: var(--color-slate-800);
   --inverse-fg: var(--color-white);
+
+  /* Hover and pressed fills for white controls (secondary buttons, rows, chips) */
+  --surface-hover: var(--color-stone-100);
+  --surface-pressed: var(--color-stone-200);
+
+  /* Sidebar: ink panel with light text */
+  --sidebar: var(--color-slate-900);
+  --sidebar-fg: var(--color-stone-50);
+  --sidebar-fg-muted: var(--color-slate-400);
+  --sidebar-hover: var(--color-slate-800);
+  --sidebar-border: var(--color-slate-800);
 
   /* Charts: single-series bars */
   --chart: var(--color-blue-500);
+
+  /* Fields: blue automation, orange software, grey other */
+  --field-automation: var(--color-blue-500);
+  --field-software: var(--color-orange-500);
+  --field-other: var(--color-slate-400);
 
   /*
    * Stages: each has a mark (dot, bar), a subtle chip background and strong chip text.
@@ -99,7 +116,17 @@
   --primary-fg: var(--color-white);
 
   --inverse: var(--color-stone-50);
+  --inverse-hover: var(--color-stone-200);
   --inverse-fg: var(--color-slate-900);
+
+  --surface-hover: var(--color-slate-800);
+  --surface-pressed: var(--color-slate-700);
+
+  --sidebar: var(--color-slate-950);
+  --sidebar-fg: var(--color-stone-50);
+  --sidebar-fg-muted: var(--color-slate-400);
+  --sidebar-hover: var(--color-slate-800);
+  --sidebar-border: var(--color-slate-800);
 
   --chart: var(--color-blue-400);
 
@@ -145,9 +172,22 @@
   --color-primary-fg: var(--primary-fg);
 
   --color-inverse: var(--inverse);
+  --color-inverse-hover: var(--inverse-hover);
   --color-inverse-fg: var(--inverse-fg);
 
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-pressed: var(--surface-pressed);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-fg: var(--sidebar-fg);
+  --color-sidebar-fg-muted: var(--sidebar-fg-muted);
+  --color-sidebar-hover: var(--sidebar-hover);
+  --color-sidebar-border: var(--sidebar-border);
+
   --color-chart: var(--chart);
+  --color-field-automation: var(--field-automation);
+  --color-field-software: var(--field-software);
+  --color-field-other: var(--field-other);
 
   --color-stage-applied: var(--stage-applied);
   --color-stage-applied-subtle: var(--stage-applied-subtle);
@@ -180,4 +220,27 @@
   --color-info: var(--info);
   --color-info-subtle: var(--info-subtle);
   --color-info-strong: var(--info-strong);
+}
+
+/*
+ * shadcn/ui names, mapped onto the tokens above. Components added with `npx shadcn add`
+ * use these (bg-background, text-muted-foreground, ...), so they follow the style guide
+ * without edits. Our own components use the names above.
+ */
+@theme inline {
+  --color-background: var(--canvas);
+  --color-foreground: var(--fg);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--fg);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--fg);
+  --color-primary-foreground: var(--primary-fg);
+  --color-secondary: var(--surface);
+  --color-secondary-foreground: var(--fg);
+  --color-muted: var(--surface-muted);
+  --color-muted-foreground: var(--fg-muted);
+  --color-accent: var(--surface-hover);
+  --color-accent-foreground: var(--fg);
+  --color-destructive: var(--danger);
+  --color-input: var(--border-strong);
 }

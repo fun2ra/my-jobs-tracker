@@ -54,8 +54,13 @@
   --color-red-700: #9e2626;
 
   --color-amber-50: #fef3d9;
-  --color-amber-500: #d99a00; /* derived */
+  --color-amber-500: #fab219; /* needs-action mark */
   --color-amber-700: #7a5200;
+
+  /* Field hues: automation uses blue-500, other uses slate-400 */
+  --color-orange-50: #fdeae2; /* derived */
+  --color-orange-500: #eb6834; /* software */
+  --color-orange-700: #a5401a; /* derived */
 
   /* Typography: IBM Plex Sans for UI, IBM Plex Mono for numbers, dates and counts */
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
